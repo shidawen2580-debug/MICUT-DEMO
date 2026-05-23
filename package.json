@@ -1,0 +1,74 @@
+{
+  "name": "mi-cut-demo",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "main": "dist/src/main/main.js",
+  "author": "mi",
+  "description": "Public demo of an Electron-based vehicle video review and batch clipping tool.",
+  "license": "MIT",
+  "keywords": [
+    "electron",
+    "typescript",
+    "video-review",
+    "batch-clipping",
+    "ffmpeg",
+    "sqlite",
+    "vehicle-testing",
+    "desktop-app"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dist:dir": "npm run build && electron-builder --dir",
+    "dist:win": "npm run build && electron-builder --win portable",
+    "dist:portable": "npm run build && electron-builder --win portable",
+    "electron:open": "npm run build && ./node_modules/.bin/electron dist/src/main/main.js",
+    "electron:smoke": "npm run build && node scripts/electron-smoke.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --import tsx --test tests/unit/app/clip-rules/get-clip-rule.test.ts tests/unit/app/projects/bind-project-video.test.ts tests/unit/domain/markers/excel-marker-parser.test.ts"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.9.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.13.10",
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  },
+  "build": {
+    "appId": "com.micut.desktop",
+      "productName": "mi-cut-demo",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/src/**/*",
+      "src/renderer/index.html",
+      "package.json"
+    ],
+    "extraMetadata": {
+      "main": "dist/src/main/main.js"
+    },
+    "asarUnpack": [
+      "node_modules/better-sqlite3/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "portable": {
+      "artifactName": "mi-cut-demo-win-portable.exe"
+    }
+  }
+}
